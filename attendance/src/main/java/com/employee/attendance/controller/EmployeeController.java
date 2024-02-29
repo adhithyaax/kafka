@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.employee.attendance.EmployeeService;
 import com.employee.attendance.exception.ResourceNotFoundException;
 import com.employee.attendance.model.Employee;
 import com.employee.attendance.repository.EmployeeRepository;
+import com.employee.attendance.service.EmployeeService;
 
 import jakarta.validation.Valid;
 import reactor.core.publisher.Flux;
