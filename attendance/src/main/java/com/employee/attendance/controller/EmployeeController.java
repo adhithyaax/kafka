@@ -28,10 +28,10 @@ import reactor.core.publisher.Mono;
 @RestController
 public class EmployeeController {
 	@Autowired
-	KafkaTemplate<String, Employee> kafkaJsontemplate;
-	String TOPIC_NAME = "emp-topic";
-	@Autowired
-	private EmployeeService sequenceGeneratorService;
+	   KafkaTemplate<String, Employee> KafkaJsontemplate;
+	   String TOPIC_NAME = "emp-topic";
+	  @Autowired
+	  private EmployeeService sequenceGeneratorService;
 	@Autowired
 	private EmployeeRepository employeeRepository;
 
@@ -58,11 +58,11 @@ public class EmployeeController {
 				employee.getDate());
 		if (emp.isPresent()) {
 			emp.get().setLogoutTime(employee.getLogoutTime());
-			kafkaJsontemplate.send(TOPIC_NAME, emp.get());
+			KafkaJsontemplate.send(TOPIC_NAME, emp.get());
 			return Mono.just(employeeRepository.save(emp.get()));
 		} else {
 			employee.setId(sequenceGeneratorService.generateSequence(Employee.SEQUENCE_NAME));
-			kafkaJsontemplate.send(TOPIC_NAME, employee);
+			KafkaJsontemplate.send(TOPIC_NAME, employee);
 			return Mono.just(employeeRepository.save(employee));
 		}
 

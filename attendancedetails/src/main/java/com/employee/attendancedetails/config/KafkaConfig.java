@@ -32,7 +32,7 @@ public class KafkaConfig {
 		Map<String, Object> config = new HashMap<>();
 
 		// Adding the Configuration
-		config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "0.0.0.0:9092");
+		config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "127.0.0.1:50640");
 		
 		  config.put(ConsumerConfig.GROUP_ID_CONFIG, "group_id");
 		 
