@@ -27,26 +27,25 @@ import reactor.core.publisher.Mono;
 
 @RestController
 public class EmployeeController {
-	 @Autowired
-	    KafkaTemplate<String, Employee> KafkaJsontemplate;
-	    String TOPIC_NAME = "emp-topic";
-	   @Autowired
-	    private EmployeeService sequenceGeneratorService;
+	@Autowired
+	KafkaTemplate<String, Employee> kafkaJsontemplate;
+	String TOPIC_NAME = "emp-topic";
+	@Autowired
+	private EmployeeService sequenceGeneratorService;
 	@Autowired
 	private EmployeeRepository employeeRepository;
 
 	@GetMapping("/employee")
 	public Flux<Employee> getEmployee() {
-		List<Employee> det=employeeRepository.findAll();
-		det.forEach(x ->{
-			if(x.getLoginTime() !=null) {
+		List<Employee> det = employeeRepository.findAll();
+		det.forEach(x -> {
+			if (x.getLoginTime() != null) {
 				LocalDateTime tempDateTime = LocalDateTime.from(x.getLoginTime());
-				long hours = tempDateTime.until( x.getLogoutTime(), ChronoUnit.HOURS );
-				System.out.println("hours >"+hours);	
+				long hours = tempDateTime.until(x.getLogoutTime(), ChronoUnit.HOURS);
+				System.out.println("hours >" + hours);
 			}
-			
+
 		});
-		
 
 		return Flux.fromIterable(employeeRepository.findAll());
 
@@ -54,32 +53,31 @@ public class EmployeeController {
 
 	@PostMapping("/employees")
 	public Mono<Employee> createEmployee(@Valid @RequestBody Employee employee) {
-	
-		Optional<Employee> emp = employeeRepository.findByEmployeeIdAndDate(employee.getEmployeeId(),employee.getDate());
-		if(emp.isPresent()) {
+
+		Optional<Employee> emp = employeeRepository.findByEmployeeIdAndDate(employee.getEmployeeId(),
+				employee.getDate());
+		if (emp.isPresent()) {
 			emp.get().setLogoutTime(employee.getLogoutTime());
-			KafkaJsontemplate.send(TOPIC_NAME,emp.get());
-			return Mono.just(employeeRepository.save(emp.get()));			
-		}else {
+			kafkaJsontemplate.send(TOPIC_NAME, emp.get());
+			return Mono.just(employeeRepository.save(emp.get()));
+		} else {
 			employee.setId(sequenceGeneratorService.generateSequence(Employee.SEQUENCE_NAME));
-			KafkaJsontemplate.send(TOPIC_NAME,employee);
+			kafkaJsontemplate.send(TOPIC_NAME, employee);
 			return Mono.just(employeeRepository.save(employee));
 		}
-		
-	
+
 	}
-	
+
 	@DeleteMapping("/employees/{id}")
-    public Mono<Map<String, Boolean>> deleteEmployee(@PathVariable(value = "id") Long employeeId)
-    throws ResourceNotFoundException {
-        Employee employee = employeeRepository.findById(employeeId)
-            .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + employeeId));
+	public Mono<Map<String, Boolean>> deleteEmployee(@PathVariable(value = "id") Long employeeId)
+			throws ResourceNotFoundException {
+		Employee employee = employeeRepository.findById(employeeId)
+				.orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + employeeId));
 
-        employeeRepository.delete(employee);
-        Map < String, Boolean > response = new HashMap < > ();
-        response.put("deleted", Boolean.TRUE);
-        return Mono.just(response);
-    }
+		employeeRepository.delete(employee);
+		Map<String, Boolean> response = new HashMap<>();
+		response.put("deleted", Boolean.TRUE);
+		return Mono.just(response);
+	}
 
-	
 }
