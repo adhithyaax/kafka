@@ -1,5 +1,6 @@
 package com.employee.attendancedetails.model;
 
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -14,7 +15,7 @@ import jakarta.persistence.Table;
 @Table(name = "attendance")
 public class AttendanceDetails {
 	@Id
-	private long id;
+	private BigInteger id;
 	@Column(name = "employeeid")
 	private long employeeId;
 	@Column(name = "firstname")
@@ -31,11 +32,11 @@ public class AttendanceDetails {
     private long duration;
     @Column(name="status")
     private String status;
-	public long getId() {
+	public BigInteger getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(BigInteger id) {
 		this.id = id;
 	}
 

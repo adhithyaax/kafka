@@ -1,5 +1,6 @@
 package com.employee.attendance.controller;
 
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
@@ -61,7 +62,7 @@ public class EmployeeController {
 			KafkaJsontemplate.send(TOPIC_NAME, emp.get());
 			return Mono.just(employeeRepository.save(emp.get()));
 		} else {
-			employee.setId(sequenceGeneratorService.generateSequence(Employee.SEQUENCE_NAME));
+			employee.setId(BigInteger.valueOf(sequenceGeneratorService.generateSequence(Employee.SEQUENCE_NAME)));
 			KafkaJsontemplate.send(TOPIC_NAME, employee);
 			return Mono.just(employeeRepository.save(employee));
 		}
@@ -69,7 +70,7 @@ public class EmployeeController {
 	}
 
 	@DeleteMapping("/employees/{id}")
-	public Mono<Map<String, Boolean>> deleteEmployee(@PathVariable(value = "id") Long employeeId)
+	public Mono<Map<String, Boolean>> deleteEmployee(@PathVariable(value = "id") BigInteger employeeId)
 			throws ResourceNotFoundException {
 		Employee employee = employeeRepository.findById(employeeId)
 				.orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + employeeId));

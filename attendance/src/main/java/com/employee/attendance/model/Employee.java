@@ -1,5 +1,6 @@
 package com.employee.attendance.model;
 
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Date;
@@ -17,7 +18,7 @@ public class Employee {
 	@Transient
 	public static final String SEQUENCE_NAME = "users_sequence";
 	@Id
-	private long  id;
+	private BigInteger  id;
 	private long  employeeId;
 	@Size(max = 100)
 	@Indexed(unique = true)
@@ -32,11 +33,11 @@ public class Employee {
 	
 	private Date date;
 
-	public long  getId() {
+	public BigInteger  getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(BigInteger id) {
 		this.id = id;
 	}
 

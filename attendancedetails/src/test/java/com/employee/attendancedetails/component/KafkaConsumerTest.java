@@ -3,6 +3,7 @@ package com.employee.attendancedetails.component;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
@@ -31,7 +32,7 @@ class KafkaConsumerTest {
     void testConsume() {
     	Date date = new Date();   
         Employee emp = new Employee();
-        emp.setId(1L);
+        emp.setId(BigInteger.valueOf(1L));
         emp.setEmployeeId(1);
         emp.setFirstName("John");
         emp.setLastName("Doe");

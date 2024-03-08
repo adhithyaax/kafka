@@ -1,5 +1,6 @@
 package com.employee.attendance.repository;
 
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.Optional;
 
@@ -8,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.employee.attendance.model.Employee;
 @Repository
-public interface EmployeeRepository extends MongoRepository<Employee, Long>{
+public interface EmployeeRepository extends MongoRepository<Employee, BigInteger>{
 
 
 

@@ -9,6 +9,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -53,7 +54,7 @@ class EmployeeControllerTest {
         Date date = new Date();   
         employeeList = new ArrayList<>();
         Employee emp1 = new Employee();
-        emp1.setId(1L);
+        emp1.setId(BigInteger.valueOf(1L));
         emp1.setEmployeeId(1);
         emp1.setDate(date);
         emp1.setLoginTime(LocalDateTime.now().minusHours(1));
@@ -61,7 +62,7 @@ class EmployeeControllerTest {
         employeeList.add(emp1);
 
         Employee emp2 = new Employee();
-        emp2.setId(2L);
+        emp2.setId(BigInteger.valueOf(2L));
         emp2.setEmployeeId(2);
         emp2.setDate(date);
         emp2.setLoginTime(LocalDateTime.now().minusHours(2));
@@ -82,7 +83,7 @@ class EmployeeControllerTest {
     void testCreateEmployee() {
     	Date input = new Date();
         Employee newEmployee = new Employee();
-        newEmployee.setId(3L);
+        newEmployee.setId(BigInteger.valueOf(3L));
         newEmployee.setEmployeeId(1);
         newEmployee.setDate(input);
         newEmployee.setLoginTime(LocalDateTime.now().minusHours(3));
@@ -102,11 +103,11 @@ class EmployeeControllerTest {
     void testDeleteEmployee() throws ResourceNotFoundException {
         Long employeeId = 1L;
         Employee employee = new Employee();
-        employee.setId(employeeId);
+        employee.setId(BigInteger.valueOf(employeeId));
 
-        when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(employee));
+        when(employeeRepository.findById(BigInteger.valueOf(employeeId))).thenReturn(Optional.of(employee));
 
-        Mono<Boolean> result = employeeController.deleteEmployee(employeeId)
+        Mono<Boolean> result = employeeController.deleteEmployee(BigInteger.valueOf(employeeId))
                 .map(response -> response.get("deleted"));
 
         assertTrue(result.block());
