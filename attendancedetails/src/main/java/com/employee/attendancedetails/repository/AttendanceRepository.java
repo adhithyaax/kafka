@@ -1,5 +1,6 @@
 package com.employee.attendancedetails.repository;
 
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.Optional;
 
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Repository;
 import com.employee.attendancedetails.model.AttendanceDetails;
 
 @Repository
-public interface AttendanceRepository extends JpaRepository<AttendanceDetails, Long>{
+public interface AttendanceRepository extends JpaRepository<AttendanceDetails, BigInteger>{
 
 	Optional<AttendanceDetails> findByEmployeeIdAndDate(long employeeId, Date date);
 
